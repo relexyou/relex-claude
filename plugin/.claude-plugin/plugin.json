@@ -1,0 +1,10 @@
+{
+  "name": "relex-legal",
+  "displayName": "Relex Legal",
+  "version": "0.1.1",
+  "description": "Operate inside a Relex legal case from Claude — start cases, draft, manage the matter — without ever exposing PII. Your client's names, IDs and documents stay end-to-end encrypted; Claude works via deep links and a PII-safe Code-Mode API.",
+  "author": { "name": "Relex" },
+  "homepage": "https://relex.you",
+  "repository": "https://github.com/relexyou/relex-claude",
+  "keywords": ["legal", "case-management", "contracts", "pii", "claude"]
+}

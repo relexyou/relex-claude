@@ -25,8 +25,8 @@ step (PII, documents, payments, and exports happen in the browser, never in chat
 
 3. **Act on `nextStep`** (one step at a time, wait for the user, then re-read status):
 
-   - `set_pii_password` → "First, let's protect your clients' identities. Open
-     **{deepLinks.pii}**, set a PII password, and save your recovery key. This
+   - `set_pii_password` → "First, let's protect the personal data in your matters.
+     Open **{deepLinks.pii}**, set a password, and save your recovery key. It
      encrypts every name, ID, and document in your browser — I only ever see
      labels like `[Party 1]`." Wait, then re-read status.
 

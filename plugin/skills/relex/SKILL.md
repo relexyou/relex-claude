@@ -1,155 +1,102 @@
 ---
 name: relex
-description: Use for ANY Relex legal-case work — starting or managing a case, drafting legal documents, contracts, handling client matters, parties, attachments, payments, or guest/client invitations in Relex. Teaches the PII-safe, deep-link-first workflow over the Relex MCP server.
+description: Use for ANY Relex work — setting up Relex, starting or running a case, drafting documents, parties, attachments, payments, collaboration, or client/guest invitations. Teaches how to drive Relex over its MCP server while the user's personal data stays encrypted in their browser.
 ---
 
-# Working inside Relex from Claude
+# Working in Relex
 
-Relex is a legal case-management platform. This skill lets you (Claude) operate
-inside a lawyer's Relex case **without ever touching their clients' personal
-data**. You sign in once over OAuth — on your first tool call the Relex MCP
-server returns an OAuth challenge and your client opens the user's browser to
-sign in with Google/Apple and approve access; **there is no key to paste** — and
-then work through the Relex MCP server (`search` + `execute` tools).
+Relex is a case-management platform used by professionals and the clients they
+work with. You are the **reasoning agent**: you read a case, reason about it,
+draft, and record your work — over the Relex MCP server (`search` + `execute`).
 
-## The one rule: PII never crosses this boundary
+You do **not** hold or enter the user's data. Adding know-how, parties, and
+documents — and anything touching personal data — happens in **Relex, in the
+user's browser**, where it is encrypted with a password only they hold. When
+something must be added or decrypted, you **point the user into Relex**; you
+never do it yourself.
 
-Client PII — names, national IDs (CNP/SSN), contact details, and **document
-content** — is **end-to-end encrypted**. It can only be decrypted in the user's
-**browser** with their PII password. The API only ever returns encrypted blobs.
+## Connect (your first tool call signs the user in)
 
-Therefore:
+On your first `search`/`execute` call the MCP server returns an OAuth challenge
+and the user's browser opens to sign in to Relex (Google or Apple) and approve —
+**no key to paste**. Tell the user a window will open, then wait. (In Claude
+desktop / claude.ai the connector at `https://relex.you/api/mcp` signs in the
+same way.)
 
-- **Never** ask the user to paste a client's name, ID number, address, contact
-  info, or a document's contents into the chat.
-- **Never** expect `execute` to return plaintext PII. Reads of party data and
-  attachment/document content are **refused** by the server and come back with a
-  deep link — when that happens, hand the user the deep link and stop trying.
-- For anything PII-bearing — adding/editing parties, viewing or exporting
-  documents, attaching files — **send the user a browser deep link** and let them
-  do it in the Relex UI. That is the correct, secure path, not a limitation to
-  work around.
+## The two tools (plain arguments — no code to write)
 
-## How to call the API (Code Mode)
+- `search({ query?, tag?, method? })` → discover endpoints; returns a short list
+  of `{ method, path, summary, tags }`.
+- `execute({ method, path, query?, body? })` → call one. `path` is relative to
+  `/v1` and must be plain (no percent-encoding). Returns `{ status, body }`.
 
-You have two tools. Always `search` first, then `execute`.
+```
+search({ query: "cases" })
+execute({ method: "GET",  path: "/onboarding/status" })
+execute({ method: "POST", path: "/cases", body: { name: "Acme dispute", caseTier: 1 } })
+```
 
-Both tools take **plain arguments** (no code/JS to write):
+## The one rule: personal data never crosses to you
 
-- `search({ query?, tag?, method? })` — discover endpoints. Returns a small list
-  of `{ method, path, summary, tags }`. Example: `search({ query: "cases" })`.
-- `execute({ method, path, query?, body? })` — call an endpoint. `path` is
-  relative to `/v1` and must be a plain path (no percent-encoding). The server
-  validates it against the spec, applies the PII guard, runs it with your auth,
-  and returns `{ status, body }`. Examples:
-  ```
-  execute({ method: "GET",  path: "/onboarding/status" })
-  execute({ method: "POST", path: "/cases", body: { name: "Acme dispute", caseTier: 1 } })
-  ```
+Names, national IDs, contact details, and document content are end-to-end
+encrypted and only decrypt in the user's browser. Therefore:
 
-## First run — set up the practice workflow
+- **Never** ask the user to type a name, ID, address, or document text into chat.
+- `execute` calls that would move personal data (reading or writing parties,
+  reading or uploading document content) are **refused** by the server and come
+  back with a deep link. Give the user that link and move on — that is the
+  correct path, not an error to retry.
+- You work only with de-identified labels (`[Party 1]`) and anonymized counts.
 
-When a user says *"set up my practice workflow with Relex"* (or is brand new),
-run the guided setup. The `/relex-setup` command has the full script; the core is:
-drive it from `GET /onboarding/status` and act on its `nextStep`.
+## Setting up a new user (status-driven)
 
-`execute({ method: "GET", path: "/onboarding/status" })` returns only anonymized
-counts + flags + deep links — never PII:
+When the user is new or asks you to set them up, drive it from
+`execute({ method: "GET", path: "/onboarding/status" })`, which returns only
+anonymized flags/counts + deep links (never PII):
 `{ connected, piiConfigured, knowledge:{total,indexed,processing,awaitingParties,failed},
-   detectedParties, parties:{count}, nextStep, deepLinks:{pii,knowledge,parties,cases} }`.
+   detectedParties, parties:{count}, nextStep, deepLinks:{ pii, knowledge, parties, cases } }`.
 
-Sequence (one step at a time; re-read status after each, report progress with the
-anonymized counts — never echo a name or ID):
+Act on `nextStep`, one step at a time, re-reading after the user acts. You don't
+do these yourself — you hand the user the right link and explain it:
 
-1. **Sign in** — your first tool call triggers the OAuth browser sign-in. Tell the
-   user a browser window will open; wait for them to finish.
-2. **PII password** (`nextStep: set_pii_password`) — deep-link `deepLinks.pii`. The
-   user sets a PII password (and saves a recovery key) that encrypts all client
-   identities in their browser. This is required before any party can be created.
-3. **Knowledge** (`add_knowledge`) — deep-link `deepLinks.knowledge`. The user
-   uploads playbooks, templates, and past matters. Relex indexes them privately
-   and extracts the parties it finds.
-4. **Auto-create parties** (`finish_parties`) — Relex found parties in the
-   knowledge; with the PII password unlocked on the knowledge page, it encrypts
-   and creates them in the browser. Confirm `parties.count` rises. You never see
-   the names — only the count.
-5. **Ready** (`create_case` / `ready`) — offer to start the first case.
+- `set_pii_password` → `deepLinks.pii`: the user sets a password (and saves the
+  recovery key) that encrypts personal data in their browser. This comes first.
+- `add_knowledge` → `deepLinks.knowledge`: the user uploads playbooks, templates,
+  and past matters. Relex indexes them privately and finds the parties in them.
+- `processing` → indexing is still running; wait, then re-read.
+- `finish_parties` → with the password unlocked on the knowledge page, Relex
+  encrypts and creates the detected parties in the browser. Confirm `parties.count`.
+- `create_case` / `ready` → setup is done; offer to start the first case.
 
-This is the heart of the product: the user's know-how powers the work and their
-clients' identities are auto-extracted into **encrypted** parties without you ever
-seeing them.
+Report progress with the counts ("✅ 4 parties created from your know-how") —
+never echo a name or ID. (The `/relex-setup` command runs exactly this.)
 
-## End-to-end workflow
+## Running a case
 
-### 1. Start a case
-`POST /cases` with `{ name, caseTier }` (tier 1 = €9, 2 = €29, 3 = €99). For an
-org case use `POST /organizations/{organizationId}/cases`. You get back a
-`caseId`. Read a case with `GET /cases?caseId=…` (encrypted/structural fields
-only — no plaintext PII).
+- **Start a case** — `execute POST /cases` `{ name, caseTier }` (tier 1/2/3). On
+  `402 Payment Required`, point the user to billing (`deepLinks.cases` / the
+  billing page); never collect card details.
+- **Parties & documents** — the user adds these in Relex (encrypted in the
+  browser); point them to the case page. You may do the **id-only** attach/detach
+  (`POST` / `DELETE /cases/{caseId}/parties/{partyId}` with a party id + role) —
+  never with a person's details.
+- **Reason & draft** — read the case structure, timeline, phases, and drafts
+  (de-identified), reason about the matter, draft documents, and record your work
+  back to the case. This is your core job.
+- **Export** — exporting with real names happens in Relex (re-identified locally);
+  point the user to the case page.
 
-If creation returns **`402 Payment Required`**, the user must pay → see §5.
+## People on a case
 
-### 2. Set up parties & PII — via the browser, always
-Parties carry PII, so you do **not** create or read them over the API. Guide the
-user:
-> "Add the people/companies involved in your case in Relex — open
-> **https://relex.you/dashboard/parties** to add a party, then attach it to the
-> case from **https://relex.you/dashboard/cases/{caseId}**. Your data is
-> encrypted locally; I never see it."
+Relex serves professionals and their clients. A **client** is invited (as a
+guest) to **start or join** a case at the practice; **colleagues and outside
+experts** can be invited to collaborate. You don't invite anyone yourself — when
+the user asks, point them to the case's share panel to create the invite, and
+keep helping on the case afterward.
 
-Once parties exist, you *may* perform the **structural, PII-free** attach/detach
-(party id + role only): `POST /cases/{caseId}/parties` `{ partyId, role }` and
-`DELETE /cases/{caseId}/parties/{partyId}`. You will only have a `partyId` if the
-user gives you the id (not the person's details) — ask for the id, never the
-identity.
+## Remember
 
-### 3. Attach documents — via the browser, always
-Document content is encrypted. Do **not** ask for file contents or try to read
-attachments. Deep-link:
-> "Upload your documents to the case here:
-> **https://relex.you/dashboard/cases/{caseId}** (drag-and-drop). They're
-> encrypted in your browser before upload."
-
-You can see *that* attachments/drafts exist via case/branch/phase metadata, but
-`GET /attachment/{id}` and `GET /attachments` are PII-refused by design.
-
-### 4. Draft
-Relex's case agent produces drafts on the case timeline (branches → phases →
-drafts). Use `GET /timeline/{timelineId}`, `GET /phases`, `GET /drafts?branchId=…`
-to see structure and `GET /draft/{draftId}` for draft text (drafts are working
-legal text the agent itself wrote — not client PII). Help the user reason about
-the matter, propose argument structure, and iterate on drafts. Heavy
-case-reasoning happens in the Relex agent; you orchestrate and advise.
-
-### 5. When the user must pay → deep-link
-If you hit `402`, or a tier upgrade / subscription is needed, **do not** try to
-collect card details. Send them to billing:
-> "This case needs payment to continue — open
-> **https://relex.you/dashboard/billing** to pay (Relex handles the payment for
-> you). Tell me once it's done and I'll continue."
-(`POST /payments/intent` / `/payments/checkout` exist, but card entry is a
-browser/Stripe flow — never gather payment data in chat.)
-
-### 6. Exporting documents with PII → deep-link
-Never export documents containing PII over the API. Send the user to the in-app
-export on the case page (**https://relex.you/dashboard/cases/{caseId}**) so the
-content is decrypted and rendered locally.
-
-### 7. Customer / client invitations (guest links)
-Lawyers can invite an external client into a single case as a **guest** (the
-guest is never an org member and never owns the case). End-to-end:
-1. Ask the user which case the client should join (the `caseId`).
-2. Generate the guest invite from the Relex dashboard — deep-link the lawyer to
-   the case's sharing panel: **https://relex.you/dashboard/cases/{caseId}**
-   ("Invite client / Share"), where they create a one-time or permanent secret
-   link. (Guest-link minting is part of the Relex guest-role flow; it is done in
-   the UI so the secret and any PII stay in the browser.)
-3. The lawyer sends that link to their client; the client opens it, signs in, and
-   lands scoped to just that one case. Confirm with the lawyer and offer to keep
-   helping on the case.
-
-## Positioning to keep in mind
-Relex doesn't replace you. It lets the lawyer use you end-to-end while Relex
-protects their PII and know-how, automates customer service, handles payments for
-free, and gives them access to a new market. Keep the user moving through the
-matter; route every PII/payment/export step to the browser via a deep link.
+You don't replace the user or hold their data — you read, reason, draft, and
+record. Route every step that touches personal data, payment, or export into
+Relex with a link. Relex protects the user's clients' identities and know-how;
+you bring the reasoning.

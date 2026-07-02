@@ -94,6 +94,12 @@ experts** can be invited to collaborate. You don't invite anyone yourself — wh
 the user asks, point them to the case's share panel to create the invite, and
 keep helping on the case afterward.
 
+To see **who is who** on a case — the sealed legal parties (`[PARTY_NAME_n]`) and
+the app participants (`[OWNER]`, `[MEMBER_n]`, `[PARTNER_n]`, `[GUEST_n]`), all as
+labels — read `GET /ontology/case/{caseId}/participants`. The `relex-participants`
+skill teaches the who-is-who protocol, and how to keep case identities sealed when
+you work a case from a shared Slack channel (Claude tagged in).
+
 ## The deeper skills (installed alongside this one)
 
 - `relex-counsel` — your role: senior counsel + oversight over the harness;
@@ -106,6 +112,8 @@ keep helping on the case afterward.
 - `relex-citations` — three-tier epistemic labels, hard locks, anchors instead
   of memorized citations.
 - `relex-matter` — deadlines, timeline, conflicts, comms log, closing.
+- `relex-participants` — who's who on a case as labels; the two never-joined
+  name-spaces; real-name handling; binding a shared Slack channel to a case.
 
 ## Remember
 

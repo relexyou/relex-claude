@@ -1,7 +1,7 @@
 {
   "name": "relex-legal",
   "displayName": "Relex Legal",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Drive your Relex legal cases from Claude — read, reason, draft, and record over a PII-safe API. Clients' names, IDs, and documents stay encrypted in the user's browser; Claude only ever works with de-identified labels.",
   "author": { "name": "Relex" },
   "homepage": "https://relex.you",

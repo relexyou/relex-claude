@@ -45,6 +45,7 @@ relex-claude/
 │   │   ├── relex-research/      You discover (web + public legal MCPs); the harness grounds
 │   │   ├── relex-citations/     3-tier epistemic labels + hard citation locks + anchors
 │   │   ├── relex-matter/        Deadlines, timeline, conflicts, comms log, closing
+│   │   ├── relex-participants/  Who's who as labels; sealed parties vs app participants; Claude-in-Slack
 │   │   └── jurisdictions/       Per-jurisdiction packs: US DE CH UK FR IT ES RO EU CA JP AU
 │   ├── agents/relex-guide.md    Onboarding subagent
 │   ├── references/              citation-locks · anchors · interop (claude-for-legal etc.)
@@ -52,6 +53,7 @@ relex-claude/
 └── docs/
     ├── connect-claude-code.md
     ├── connect-claude-desktop.md
+    ├── connect-claude-tag.md
     ├── connect-codex.md
     └── positioning.md
 ```
@@ -85,5 +87,6 @@ repo is just the plugin + docs.
    [`docs/install.md`](docs/install.md) (per-client:
    [`connect-claude-code.md`](docs/connect-claude-code.md),
    [`connect-claude-desktop.md`](docs/connect-claude-desktop.md),
+   [`connect-claude-tag.md`](docs/connect-claude-tag.md),
    [`connect-codex.md`](docs/connect-codex.md)).
 3. From then on, ask Claude to start cases, draft, and manage matters.

@@ -35,9 +35,9 @@ directly — see Codex's MCP docs for the current field names.
 
 You get exactly two tools:
 
-- `search(code)` — discover Relex API endpoints (runs your JS against the spec).
-- `execute(code)` — return a request descriptor `{ method, path, query?, body? }`
-  to call an endpoint with your auth.
+- `search({ query, tag?, method? })` — discover Relex API endpoints from the spec.
+- `execute({ method, path, query?, body? })` — call one endpoint via a plain descriptor
+  (validated server-side, PII-guarded), running with your auth.
 
 Ask Codex to "start a Relex case" to confirm. Client personal data, documents,
 payments and exports are handled in the browser via deep links — the connector

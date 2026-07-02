@@ -38,14 +38,39 @@ relex-claude/
 │   ├── .claude-plugin/plugin.json
 │   ├── .mcp.json                Remote MCP connector (https://relex.you/api/mcp; OAuth sign-in)
 │   ├── commands/                /relex-setup (guided onboarding) + /relex-connect
-│   ├── skills/relex/SKILL.md    End-to-end PII-safe workflow (auto-loaded)
-│   └── agents/relex-guide.md    Onboarding subagent
+│   ├── skills/
+│   │   ├── relex/               Drive Relex over MCP + PII discipline (auto-loaded)
+│   │   ├── relex-counsel/       Senior-counsel role + oversight loop over the harness
+│   │   ├── relex-ontology/      The read→audit→repair→acquire→converge collaboration loop
+│   │   ├── relex-research/      You discover (web + public legal MCPs); the harness grounds
+│   │   ├── relex-citations/     3-tier epistemic labels + hard citation locks + anchors
+│   │   ├── relex-matter/        Deadlines, timeline, conflicts, comms log, closing
+│   │   └── jurisdictions/       Per-jurisdiction packs: US DE CH UK FR IT ES RO EU CA JP AU
+│   ├── agents/relex-guide.md    Onboarding subagent
+│   ├── references/              citation-locks · anchors · interop (claude-for-legal etc.)
+│   └── scripts/validate_skills.py
 └── docs/
     ├── connect-claude-code.md
     ├── connect-claude-desktop.md
     ├── connect-codex.md
     └── positioning.md
 ```
+
+## What Claude can do inside a case
+
+Claude acts as **senior counsel + oversight**; the Relex backend agents are the
+**execution harness**; they collaborate through the case **ontology** (the
+shared understanding — Claude audits it for gaps, repairs it, and directs
+acquisition). Division of labour: **you discover** public authority (your own web
+search + public legal MCPs — CourtListener, EUR-Lex, entscheidsuche, NeuRIS…),
+and the **harness grounds** it — a draft may only cite law whose *verbatim* text
+sits in the cache (the server verifier enforces it), so citations don't
+hallucinate. Every legal assertion is labelled **secured / verify / never-use**;
+hard citation locks (no proprietary blind-cites, no docket numbers from memory)
+keep filings clean. Twelve jurisdiction packs carry the citation schema, official
+sources, compliance limits, method and limitation heuristics per system. Designed
+to run **hand-in-hand** with Anthropic's `claude-for-legal` (generic drafting
+playbooks) — Relex adds the confidential workspace + grounding.
 
 The MCP handler itself (the `search`/`execute` tools, descriptor validation, and
 the PII guard) lives in the **Relex backend** (`/v1/mcp`), not in this repo. This

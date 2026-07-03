@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Relex — use Claude on your legal matters without ever exposing client PII.",
-    "version": "0.2.2"
+    "version": "0.2.3"
   },
   "plugins": [
     {

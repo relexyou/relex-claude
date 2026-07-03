@@ -47,6 +47,7 @@ relex-claude/
 │   │   ├── relex-matter/        Deadlines, timeline, conflicts, comms log, closing
 │   │   ├── relex-participants/  Who's who as labels; sealed parties vs app participants; Claude-in-Slack
 │   │   ├── relex-intake/        End-to-end client intake: request → agreement → e-sign → invoice
+│   │   ├── relex-partner/       Guides a firm through partner-program registration (to charge clients)
 │   │   └── jurisdictions/       Per-jurisdiction packs: US DE CH UK FR IT ES RO EU CA JP AU
 │   ├── agents/relex-guide.md    Onboarding subagent
 │   ├── references/              citation-locks · anchors · interop (claude-for-legal etc.)

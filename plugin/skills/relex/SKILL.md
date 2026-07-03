@@ -116,6 +116,8 @@ you work a case from a shared Slack channel (Claude tagged in).
   name-spaces; real-name handling; binding a shared Slack channel to a case.
 - `relex-intake` — end-to-end client intake: find the request, write the intake,
   agreement from a template, native e-sign (id-only signers), invoice the client.
+- `relex-partner` — guide a firm through partner-program registration (the
+  prerequisite to charge clients + run paid intake); states + what to do.
 
 ## Remember
 

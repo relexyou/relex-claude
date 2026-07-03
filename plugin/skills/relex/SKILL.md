@@ -114,6 +114,8 @@ you work a case from a shared Slack channel (Claude tagged in).
 - `relex-matter` — deadlines, timeline, conflicts, comms log, closing.
 - `relex-participants` — who's who on a case as labels; the two never-joined
   name-spaces; real-name handling; binding a shared Slack channel to a case.
+- `relex-intake` — end-to-end client intake: find the request, write the intake,
+  agreement from a template, native e-sign (id-only signers), invoice the client.
 
 ## Remember
 

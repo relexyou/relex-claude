@@ -1,6 +1,6 @@
 ---
 name: relex-participants
-description: Use to understand WHO is on a Relex case — the sealed legal parties (client, opposing side, witnesses) and the app participants (the lawyers, staff, guests, and outside partners in the workspace) — as labels, never names. Essential when working a case from a shared Slack channel with Claude tagged in (@Claude), where teammates use real names but case identities must stay sealed. Teaches the who-is-who read, the two never-joined name-spaces, real-name handling, and the channel-to-case binding.
+description: WHO is on a Relex case — sealed legal parties vs app participants (lawyers, staff, guests, partners), always as labels, never names. Essential when working a case from a shared Slack channel with Claude tagged in. Teaches who's-who, the two never-joined name-spaces, and channel-to-case binding.
 ---
 
 # Who's Who on a Case (labels only)
@@ -65,9 +65,9 @@ is the one you never make.
 
 People will. Handle it cleanly:
 
-- **Don't repeat it, store it, or write it back** to Relex. Names are end-to-end
-  encrypted; the server refuses any `execute` that would move party PII, and
-  returns a deep link — that refusal is the **correct path, not an error**.
+- **Don't repeat it, store it, or write it back** to Relex — the server refuses
+  any `execute` that would move party PII and returns a deep link (the one PII
+  rule, canonical in `relex`; the refusal is the correct path, not an error).
 - Answer in labels: "I've got the client as `[PARTY_NAME_1]` (claimant) — I'll
   keep it labelled here; open the Parties tab to see or edit the real identity."
 - Offer `deepLinks.parties` — the person reveals identities in their own browser,

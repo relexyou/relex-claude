@@ -34,12 +34,13 @@ filing, extension request, user escalation) before any substantive work.
 
 ## The working loop
 
-**At matter start, load the jurisdiction pack.** Once you know the forum, read
-`jurisdictions/<XX>.md` (US, DE, CH, UK, FR, IT, ES, RO, EU, CA, JP, AU) — it
-gives the citation schema + hard locks, the discovery channels, what the harness
-can ground vs what's discovery-only, compliance limits, method notes, and
-limitation heuristics for that system. It complements the backend's own
-jurisdiction reasoning — don't restate it, apply it.
+**At matter start, load the jurisdiction pack.** Once you know the forum, read the
+jurisdiction pack at `../jurisdictions/<XX>.md` relative to this skill (i.e.
+`skills/jurisdictions/<XX>.md` in the relex-legal plugin) — one of US, DE, CH, UK,
+FR, IT, ES, RO, EU, CA, JP, AU. It gives the citation schema + hard locks, the
+discovery channels, what the harness can ground vs what's discovery-only,
+compliance limits, method notes, and limitation heuristics for that system. It
+complements the backend's own jurisdiction reasoning — don't restate it, apply it.
 
 1. Snapshot → 2. read case + ontology → 3. audit gaps (`relex-ontology`) →
 4. direct acquisition (`relex-research`) → 5. steer a case-agent turn
@@ -85,6 +86,15 @@ Run all four; document the outcome as a Votum:
    document).
 4. **Robustness** — write the three strongest counter-arguments; the document
    must survive them or disclose the risk to the user.
+
+## Deliverables catalogue (load on demand)
+
+For a **named work-product** beyond a routine draft — clause fallback ladder,
+obligation-extraction report, risk heat map, negotiation/BATNA plan, settlement
+valuation, examination outline, board/client briefing, multi-jurisdiction
+comparison — read `references/deliverables.md`: each entry gives the method, the
+Relex flow that anchors it, and how to record it to the case. The stop-criteria
+below still bind (numbers, sends, filings are the human's).
 
 ## Stop-criteria (hand to the human, don't simulate on)
 

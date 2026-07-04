@@ -42,7 +42,19 @@ rules, controlling-vs-persuasive, style/register conventions, doctrinal bans).
 Named community packs for this jurisdiction to lean on for method/citation depth
 (via `references/interop.md`), and what each is good for.
 
-## Limitation / deadline heuristics
-The high-frequency limitation & procedural periods — as ORIENTATION only.
-**Never finalize a deadline from model knowledge**: compute from the secured
-norm text and flag for human verification (`relex-matter`).
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
+The high-frequency limitation & procedural periods and their classic traps — as
+ORIENTATION only, with **no** closing restatement. The deadline RULE itself lives
+in `relex-matter` (canonical); a pack carries it ONLY via this exact heading.
+
+## What packs never restate (canonical homes elsewhere)
+Keep a pack to what is jurisdiction-specific. Do NOT restate:
+- **the deadline rule** beyond this heading — canonical in `relex-matter`;
+- **the PII one-rule** — canonical in the `relex` skill + the server `execute`
+  tool description at runtime;
+- **the interop framing** (how Relex layers grounding + PII custody over community
+  packs) — canonical in `references/interop.md`; a pack keeps only its own
+  community-pack pointers;
+- **backend Method depth** — the backend injects a per-jurisdiction `## Method`
+  into its reason model, so a pack's Method notes stay 2–4 reminders for Claude's
+  OWN drafting/review, not a full method treatise.

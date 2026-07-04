@@ -31,9 +31,11 @@ applies in common-law provinces (SCC binds all).
 | Entities | **Corporations Canada** Federal Corporation API (ISED) | free key |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Statutes: add a `ca_justice` directive (laws-lois XML) to ground a federal
-  section (adapter to be enabled — confirm via `GET /research/sources`; else
-  generic ladder + `sourceHint`).
+  section — whether a dedicated adapter is live is in the registry, else the
+  generic ladder + `sourceHint` handles it.
 - Case law: **CanLII API is metadata/citator only, not full text**, and CanLII's
   terms restrict bulk scraping — so decisions are **discovery-only**: read on
   canlii.org / court site, cite by neutral citation, pass the URL as `sourceHint`.
@@ -49,12 +51,11 @@ stays client-side. **CanLII full text is site-only** per terms — do not bulk-h
 - Draft in the required language; McGill Guide citation discipline.
 
 ## Community skills to consult
-`mohammadfarooqi/canlii-mcp` (9 tools, respects CanLII rate limits). Relex adds
-grounding + PII custody.
+`mohammadfarooqi/canlii-mcp` (9 tools, respects CanLII rate limits)
+(interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 Provincial Limitations Acts govern — commonly a **2-yr basic** limitation from
 discoverability (e.g. Ontario Limitations Act 2002, s 4) + a 15-yr ultimate;
 **Québec** prescription is **3 yrs** for personal actions (art. 2925 CcQ). Federal
-causes have their own. **Never finalize from memory** — compute from the secured
-provision for the correct province, flag for counsel.
+causes have their own.

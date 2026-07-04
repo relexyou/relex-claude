@@ -30,12 +30,13 @@ separate orders.
 | Entities | **INPI RNE** API; Sirene (INSEE); annuaire-entreprises.data.gouv.fr | free key / open |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Both **`fr_dila`** (Légifrance statutes) and **`fr_judilibre`** (case law)
   adapters exist but are **gated on PISTE OAuth credentials**
-  (`LEGIFRANCE_OAUTH_CLIENT_ID/SECRET`). If not yet provisioned (operator step),
+  (`LEGIFRANCE_OAUTH_CLIENT_ID/SECRET`). Until provisioned (operator step),
   grounding falls back to the generic ladder + a `sourceHint` (a legifrance.gouv.fr
-  or courdecassation.fr URL you found via justicelibre/web). Confirm live via
-  `GET /research/sources`.
+  or courdecassation.fr URL you found via justicelibre/web).
 
 ## Compliance limits
 CNIL (data protection); client data stays client-side in Relex. AMF (markets),
@@ -50,10 +51,10 @@ source.
 ## Community skills to consult
 **`Dahliyaal/justicelibre`** (no-key case-law MCP — a standout),
 `jmtanguy/droit-francais-mcp`, `mauryaland/mcp-magistrat-civil` (+ magistrate
-reasoning skill), `pylegifrance/mcp-server-legifrance`. Relex adds grounding + PII.
+reasoning skill), `pylegifrance/mcp-server-legifrance`
+(interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 *Prescription* de droit commun **5 ans** (art. 2224 C. civ.) from knowledge;
 real-property 30 yrs (art. 2227); *action publique* varies by offence class;
-labor claims often 2–3 yrs (Code du travail). **Never finalize from memory** —
-compute from the secured article, flag for the *avocat*.
+labor claims often 2–3 yrs (Code du travail).

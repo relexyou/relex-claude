@@ -26,11 +26,13 @@ lines are highly persuasive; *Corte costituzionale* on constitutionality.
 | Entities | Registro Imprese (InfoCamere, paid); VAT check (Agenzia Entrate) | — |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Statutes: **`it_normattiva`** adapter enabled — grounds `art. … c.c.` verbatim
   (upgradeable to the new dati.normattiva API).
 - Case law: **discovery-first** — SentenzeWeb covers recent Cassazione (free); the
   full ItalgiureWeb archive is reserved/paid, so older decisions are discovery-only
-  via `sourceHint`. Confirm via `GET /research/sources`.
+  via `sourceHint`.
 
 ## Compliance limits
 Garante per la protezione dei dati personali (GPDP); client data stays client-side.
@@ -42,10 +44,9 @@ Full Italgiure archive = reserved tiers (don't assume bulk access).
 - Draft in Italian; formal register for *atto di citazione* / *comparsa*.
 
 ## Community skills to consult
-**`capazme/mcp-legal-it`** (unusually deep — calculators + sources). Relex adds
-grounding + PII custody.
+**`capazme/mcp-legal-it`** (unusually deep — calculators + sources)
+(interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 *Prescrizione ordinaria* **10 anni** (art. 2946 c.c.); **5 anni** for some
-(art. 2948, e.g. periodic payments); shorter for specific actions. **Never
-finalize from memory** — compute from the secured article, flag for the *avvocato*.
+(art. 2948, e.g. periodic payments); shorter for specific actions.

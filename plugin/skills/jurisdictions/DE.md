@@ -43,13 +43,14 @@ stare-decisis** (except § 31 BVerfGG) — never argue precedent-binding.
 | Entities | handelsregister.de (search, no official API); offeneregister.de (stale dump) | — |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Statutes: **`de_gii`** (gesetze-im-internet) adapter is enabled — a `statute`
-  directive with `code`/`article` grounds `§ … <Code>` text. Add NeuRIS as a
+  directive with `code`/`article` grounds `§ … <Code>` text; add NeuRIS as a
   `sourceHint` for laws/decisions gii doesn't cover.
-- Case law: **discovery-first** today (no dedicated DE case-law adapter) — find
-  the decision on NeuRIS/court site, pass its URL as `sourceHint` on a
+- Case law: **discovery-first** (no dedicated DE case-law adapter) — find the
+  decision on NeuRIS/court site, pass its URL as `sourceHint` on an
   `authorityType:"case_law"` directive; the generic ladder fetches the verbatim.
-- Confirm live via `GET /research/sources`.
 
 ## Compliance limits
 - § 203 StGB (professional-secret) + § 43e BRAO + Art. 28 GDPR: client-linked
@@ -71,14 +72,12 @@ stare-decisis** (except § 31 BVerfGG) — never argue precedent-binding.
 **`Klotzkette/claude-fuer-deutsches-recht`** — the substantial German pack; use
 its foundation refs (`zitierweise` = citation discipline, `methodik-buergerliches-
 recht`, `leitentscheidungen-anker`) for method + citation depth, and its
-practice-area routing. Relex supplies the enforcement it lacks: verbatim grounding
-+ PII custody (`references/interop.md`). Its own audit found ~30% of its memorized
+practice-area routing (interop framing → `references/interop.md`). Its own audit
+found ~30% of its memorized
 docket numbers were wrong — so **treat its case-law anchors as retrieval keys, and
 ground every cite through the harness**, never from its (or your) memory.
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 Regelverjährung 3 years (§ 195 BGB) from year-end of accrual+knowledge (§ 199);
 long-stops 10/30 yrs. Kündigungsschutzklage **3-week** filing (§§ 4, 7 KSchG) — a
-classic trap. AGG claims: 2-month written assertion (§ 15 IV AGG). **Never finalize
-from memory** — compute from the secured § text (trigger + period + Hemmung),
-flag for the attorney (`relex-matter`).
+classic trap. AGG claims: 2-month written assertion (§ 15 IV AGG).

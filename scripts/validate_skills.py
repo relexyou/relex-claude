@@ -28,6 +28,25 @@ DECIMAL_COMMA_RE = re.compile(r"\d,\d")
 FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---\n", re.DOTALL)
 SKILL_KEYS = {"name", "description", "user-invocable", "argument-hint"}
 
+# Jurisdiction packs are reference files (NO frontmatter) under skills/jurisdictions/.
+PACK_NAME_RE = re.compile(r"^([A-Z]{2}|_TEMPLATE)\.md$")
+CANONICAL_DEADLINE_HEADING = (
+    "## Limitation / deadline heuristics "
+    "(orientation only — never finalize from memory)"
+)
+REQUIRED_PACK_HEADINGS = (
+    "## Legal family",
+    "## Citation",
+    "## Discovery channels",
+    "## Grounding availability",
+    "## Compliance limits",
+    "## Method notes",
+    "## Community skills",
+    "## Limitation / deadline heuristics",
+)
+PACK_MAX_BYTES = 6144
+DESC_INFO_THRESHOLD = 350
+
 
 def _frontmatter(text: str):
     m = FRONTMATTER_RE.match(text)
@@ -71,23 +90,73 @@ def check_markdown_frontmatter(path: pathlib.Path, errors: list):
         errors.append(f"{rel}: empty description")
 
 
+def check_pack(path: pathlib.Path, errors: list):
+    """Validate one jurisdiction pack (stdlib only — packs carry no frontmatter)."""
+    rel = path.relative_to(ROOT)
+    name = path.name
+    if not PACK_NAME_RE.match(name):
+        errors.append(f"{rel}: pack filename must match ^([A-Z]{{2}}|_TEMPLATE)\\.md$")
+    raw = path.read_bytes()
+    if len(raw) > PACK_MAX_BYTES:
+        errors.append(f"{rel}: pack > {PACK_MAX_BYTES} bytes ({len(raw)})")
+    text = path.read_text()
+    if FRONTMATTER_RE.match(text):
+        errors.append(f"{rel}: pack must NOT have YAML frontmatter (it is a reference file)")
+    lines = text.splitlines()
+    title = lines[0] if lines else ""
+    code = name[:-3]  # strip '.md'
+    if code != "_TEMPLATE" and not title.startswith(f"# {code} — "):
+        errors.append(f"{rel}: title line must start '# {code} — '")
+    headings = [ln for ln in lines if ln.startswith("## ")]
+    for req in REQUIRED_PACK_HEADINGS:
+        if not any(h.startswith(req) for h in headings):
+            errors.append(f"{rel}: missing required section heading '{req}'")
+    if CANONICAL_DEADLINE_HEADING not in text:
+        errors.append(
+            f"{rel}: deadline heading must be exactly '{CANONICAL_DEADLINE_HEADING}'"
+        )
+    if "GET /research/sources" not in text:
+        errors.append(f"{rel}: must reference the live registry 'GET /research/sources'")
+
+
 def main() -> int:
     errors: list = []
+    infos: list = []
     skills = sorted(ROOT.glob("skills/**/SKILL.md"))
     if not skills:
         print("no skills found", file=sys.stderr)
         return 2
+    md_meta = sorted(ROOT.glob("commands/*.md")) + sorted(ROOT.glob("agents/*.md"))
     for p in skills:
         check_skill(p, errors)
-    for p in sorted(ROOT.glob("commands/*.md")) + sorted(ROOT.glob("agents/*.md")):
+    for p in md_meta:
         check_markdown_frontmatter(p, errors)
+
+    packs = sorted(ROOT.glob("skills/jurisdictions/*.md"))
+    for p in packs:
+        check_pack(p, errors)
+
+    # Non-failing: flag long frontmatter descriptions (a selector cost, not an error).
+    for p in skills + md_meta:
+        fm = _frontmatter(p.read_text()) or {}
+        desc = str(fm.get("description", ""))
+        if len(desc) > DESC_INFO_THRESHOLD:
+            infos.append(
+                f"{p.relative_to(ROOT)}: description {len(desc)} chars "
+                f"(> {DESC_INFO_THRESHOLD} — informational)"
+            )
+    for i in infos:
+        print("  ℹ", i)
 
     if errors:
         print(f"FAIL — {len(errors)} problem(s):")
         for e in errors:
             print("  •", e)
         return 1
-    print(f"OK — {len(skills)} skills + commands/agents validated")
+    print(
+        f"OK — {len(skills)} skills + {len(packs)} jurisdiction packs "
+        f"+ commands/agents validated"
+    )
     return 0
 
 

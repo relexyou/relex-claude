@@ -46,9 +46,11 @@ step (PII, documents, payments, and exports happen in the browser, never in chat
 
    - `create_case` → setup is done. Confirm: "You're set up — {parties.count}
      parties are encrypted and ready, and your know-how is indexed. Want me to
-     start your first case?" If yes, `execute` → `POST /cases` `{ name, caseTier }`
-     (see the `relex` skill). If it returns `402`, deep-link **{deepLinks.cases}**
-     / billing to pay.
+     start your first case?" If yes, `execute` → `POST /cases` with an **empty
+     body** — no name, no tier; Relex's eval flow names and tiers the case from the
+     matter (see the `relex` skill). On `payRequired`/`402`, hand the user
+     **`…/dashboard/cases/{caseId}`** to review the offer and pay — never quote
+     prices.
 
    - `ready` → everything's set; move on to real case work via the `relex` skill.
 

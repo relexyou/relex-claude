@@ -46,9 +46,9 @@ Marking tier 2/3 honestly is clean lawyerly practice, not weakness.
 - **Topic-match check.** Before attaching any authority: does the *holding*
   actually support the proposition? A real citation for the wrong proposition
   is still a false citation.
-- **No deadline from memory** — limitation/procedural periods are computed
-  from the secured norm text and flagged for human verification
-  (`relex-matter`).
+- **No deadline from memory** — hard lock; the canonical deadline rule lives in
+  `relex-matter` (compute from the secured norm text, flag for human
+  verification).
 
 ## Anchors, not memorized citations
 
@@ -82,6 +82,6 @@ Anchors are honest retrieval keys — they contain nothing to hallucinate.
   when it does, that's a **grounding gap**: issue the directive, re-reason.
 - Record grounded issues in the ontology with their ground ("settled — grounded
   by cached § 823 BGB text"), so the understanding carries its evidence.
-- Official-source whitelist per jurisdiction lives in `jurisdictions/*.md`;
+- Official-source whitelist per jurisdiction lives in `../jurisdictions/*.md`;
   finding aids (aggregators) are for *finding*, the citation names the official
   source.

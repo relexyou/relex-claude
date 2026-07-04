@@ -47,7 +47,7 @@ bench, date if known, official source to verify in — never a memorized citatio
 | AU | AustLII (read, don't bulk-scrape); legislation.gov.au |
 
 Per-jurisdiction method, citation schema and source whitelists live in the
-`jurisdictions/` packs when installed.
+`../jurisdictions/<XX>.md` packs when installed.
 
 **Compliance limits you must respect during discovery** (encode in your plan):
 UK Find Case Law bulk/computational use needs a licence — read individual
@@ -58,14 +58,9 @@ manual-and-targeted and the `sourceHint` you pass is the official page.
 
 ## Step 3 — directive (the harness's job)
 
-```
-execute({ method: "POST", path: "/research/scrape", body: {
-  jurisdiction: "DE", code: "BGB", article: "823",
-  authorityType: "statute",            // statute | case_law | regulator
-  sourceHint: "https://www.gesetze-im-internet.de/bgb/__823.html",
-  caseId: "abc123"                     // provenance (results are shared cache)
-}})
-```
+`POST /research/scrape` grounds one authority — params via `search`
+(`jurisdiction`, `code`, `article`, `authorityType` = statute | case_law |
+regulator, `sourceHint?`, `caseId?` for provenance; results are a shared cache).
 
 - **Cache-first**: `status: "cached"` means it's already grounded — done.
 - `status: "enqueued"` → poll `GET /research/scrape/{jobId}` until `ingested`,

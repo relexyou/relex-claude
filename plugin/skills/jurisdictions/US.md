@@ -37,10 +37,11 @@ state-confirmation gap** in the ontology — don't guess silently.
 | Entities | SEC **EDGAR** (full-text + submissions APIs); state SoS registers | EDGAR open (UA header) |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - **US case law → CourtListener** is **enabled** (token provisioned) — issue
   `POST /research/scrape {jurisdiction:"US", code:"<court>", article:"<cite/URL>",
-  authorityType:"case_law", sourceHint:"<courtlistener URL>"}`. Confirm live via
-  `GET /research/sources`.
+  authorityType:"case_law", sourceHint:"<courtlistener URL>"}`.
 - **Federal statutes/CFR**: add GovInfo/eCFR as `sourceHint` on a `statute`
   directive; the generic fetch ladder handles the official HTML/XML.
 - **State statutes**: US-IL (ILGA), US-TX (texas.public.law), US-NY (OpenLeg,
@@ -70,13 +71,10 @@ state-confirmation gap** in the ontology — don't guess silently.
 ## Community skills to consult
 Anthropic `claude-for-legal` (litigation-legal for demands/claim-charts/dockets;
 ip-legal; privacy-legal) for generic US drafting playbooks; `master-claude-for-legal`
-for verification/privilege governance. Relex adds the confidential workspace +
-grounding (`references/interop.md`).
+for verification/privilege governance (interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 Statutes of limitations are **state-specific and claim-specific** (e.g. personal
 injury 1–6 yrs; written contract 3–6 yrs; fraud from discovery). Federal claims
 have their own (e.g. § 1983 borrows the state PI period; securities 10b-5 = 2yr
-discovery / 5yr repose). Court deadlines come only from the docket/order. **Never
-finalize a deadline from memory** — compute from the secured statute text, show
-trigger + period + tolling, flag for the attorney (`relex-matter`).
+discovery / 5yr repose). Court deadlines come only from the docket/order.

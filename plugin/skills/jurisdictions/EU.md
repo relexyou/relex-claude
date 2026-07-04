@@ -29,10 +29,12 @@ Fundamental Rights applies when member states implement EU law.
 | Case law | CURIA (via ECLI → CELLAR) | none |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Legislation: **`eu_eurlex`** (Cellar) adapter enabled — grounds a Regulation/
   Directive article verbatim by CELEX.
 - CJEU case law: reachable via CELLAR/ECLI — pass the EUR-Lex/CURIA URL as
-  `sourceHint` on a `case_law` directive. Confirm via `GET /research/sources`.
+  `sourceHint` on a `case_law` directive.
 
 ## Compliance limits
 CELLAR/EUR-Lex are open (respect the SPARQL timeout / fair use). No PII concern in
@@ -48,11 +50,10 @@ EU primary sources; client data stays client-side per the relevant national pack
 
 ## Community skills to consult
 `cyanheads/eur-lex-mcp-server`, `Ansvar EU_compliance_MCP` (61 regulations),
-`Hack23/European-Parliament-MCP`. Relex adds grounding + PII custody.
+`Hack23/European-Parliament-MCP` (interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 EU law usually leaves limitation to national law (equivalence + effectiveness).
 Specific EU regimes have their own: competition-damages (Dir. 2014/104, **5 yrs**
 min.), state-aid recovery **10 yrs**, EU staff/institution actions have Treaty
-time-limits. **Never finalize from memory** — check the specific instrument and the
-national procedural rules, flag for the lawyer.
+time-limits.

@@ -27,9 +27,11 @@ but *doctrina jurisprudencial* of the Tribunal Supremo (2+ concordant STS) matte
 | Entities | Registro Mercantil (paid); **BORME** via BOE API (open) | — |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Statutes: add an `es_boe` directive with the article; the BOE consolidated-law
-  API grounds it (adapter to be enabled — confirm via `GET /research/sources`;
-  else generic ladder + `sourceHint`).
+  API grounds it — whether a dedicated adapter is live is in the registry, else
+  the generic ladder + `sourceHint` handles it.
 - Case law: **discovery-only** — see compliance.
 
 ## Compliance limits
@@ -47,10 +49,9 @@ harvest CENDOJ. AEPD (data protection); client data stays client-side.
 
 ## Community skills to consult
 **`betobetico/claude-para-abogados`** (Spanish adaptation — 20 modules);
-`robinlawyer/claude-for-spanish-law` (BOE/CENDOJ/TC/TJUE/AEPD, early). Relex adds
-grounding + PII custody.
+`robinlawyer/claude-for-spanish-law` (BOE/CENDOJ/TC/TJUE/AEPD, early)
+(interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 Personal actions **5 años** (art. 1964 CC, reduced from 15 in 2015); real actions
-30 yrs; specific shorter periods. Foral regions may differ. **Never finalize from
-memory** — compute from the secured article, flag for the *abogado*.
+30 yrs; specific shorter periods. Foral regions may differ.

@@ -1,6 +1,6 @@
 ---
 name: relex-partner
-description: Use to guide a lawyer or firm through joining the Relex partner program — the registration that lets them charge their own clients (engagement fees and invoices) through their own Stripe account. Teaches the whole process — profile and credentials, the program subscription, payment onboarding, then manual Relex verification and going live. Explains the states (pending, verified, published) and when client invoicing unlocks. Process guidance only; the user enters details and pays in their browser.
+description: Guide a lawyer or firm through joining the Relex partner program — the registration that lets them charge their own clients (fees, invoices) via their own Stripe account. Covers the states (pending, verified, published), payment onboarding, Relex verification, and when client invoicing unlocks.
 ---
 
 # Joining the Relex partner program

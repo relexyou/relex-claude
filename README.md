@@ -50,9 +50,11 @@ relex-claude/
 │   │   ├── relex-partner/       Guides a firm through partner-program registration (to charge clients)
 │   │   └── jurisdictions/       Per-jurisdiction packs: US DE CH UK FR IT ES RO EU CA JP AU
 │   ├── agents/relex-guide.md    Onboarding subagent
-│   ├── references/              citation-locks · anchors · interop (claude-for-legal etc.)
-│   └── scripts/validate_skills.py
+│   └── references/              interop · deliverables (claude-for-legal etc.)
+├── scripts/validate_skills.py   Skill + jurisdiction-pack validator
+├── SECURITY.md
 └── docs/
+    ├── install.md
     ├── connect-claude-code.md
     ├── connect-claude-desktop.md
     ├── connect-claude-tag.md

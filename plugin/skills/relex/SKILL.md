@@ -9,11 +9,10 @@ Relex is a case-management platform used by professionals and the clients they
 work with. You are the **reasoning agent**: you read a case, reason about it,
 draft, and record your work — over the Relex MCP server (`search` + `execute`).
 
-You do **not** hold or enter the user's data. Adding know-how, parties, and
-documents — and anything touching personal data — happens in **Relex, in the
-user's browser**, where it is encrypted with a password only they hold. When
-something must be added or decrypted, you **point the user into Relex**; you
-never do it yourself.
+You do **not** hold or enter the user's data. Know-how, parties, and documents —
+anything personal — live in **Relex, in the user's browser**, encrypted under a
+password only they hold. When something must be added or decrypted, you **point
+the user into Relex** with a link; you never do it yourself.
 
 ## Connect (your first tool call signs the user in)
 
@@ -33,7 +32,7 @@ same way.)
 ```
 search({ query: "cases" })
 execute({ method: "GET",  path: "/onboarding/status" })
-execute({ method: "POST", path: "/cases", body: { name: "Acme dispute", caseTier: 1 } })
+execute({ method: "POST", path: "/cases", body: {} })  // no name, no tier — the eval flow sets both
 ```
 
 ## The one rule: personal data never crosses to you
@@ -48,34 +47,29 @@ encrypted and only decrypt in the user's browser. Therefore:
   correct path, not an error to retry.
 - You work only with de-identified labels (`[Party 1]`) and anonymized counts.
 
+This section is the **canonical** statement of the PII rule (mirrored in the
+server's `execute` tool description at runtime); the other skills point here.
+
 ## Setting up a new user (status-driven)
 
 When the user is new or asks you to set them up, drive it from
-`execute({ method: "GET", path: "/onboarding/status" })`, which returns only
-anonymized flags/counts + deep links (never PII):
-`{ connected, piiConfigured, knowledge:{total,indexed,processing,awaitingParties,failed},
-   detectedParties, parties:{count}, nextStep, deepLinks:{ pii, knowledge, parties, cases } }`.
-
-Act on `nextStep`, one step at a time, re-reading after the user acts. You don't
-do these yourself — you hand the user the right link and explain it:
-
-- `set_pii_password` → `deepLinks.pii`: the user sets a password (and saves the
-  recovery key) that encrypts personal data in their browser. This comes first.
-- `add_knowledge` → `deepLinks.knowledge`: the user uploads playbooks, templates,
-  and past matters. Relex indexes them privately and finds the parties in them.
-- `processing` → indexing is still running; wait, then re-read.
-- `finish_parties` → with the password unlocked on the knowledge page, Relex
-  encrypts and creates the detected parties in the browser. Confirm `parties.count`.
-- `create_case` / `ready` → setup is done; offer to start the first case.
-
-Report progress with the counts ("✅ 4 parties created from your know-how") —
-never echo a name or ID. (The `/relex-setup` command runs exactly this.)
+`execute GET /onboarding/status` — anonymized flags, counts and deep links, never
+PII. Act on its `nextStep` **one step at a time**, re-reading after the user acts:
+PII password → add knowledge → (indexing) → auto-created parties → first case. You
+never do these yourself — you hand the user the matching deep link and explain it,
+and report progress in counts only ("✅ 4 parties created"), never a name or ID.
+(`/relex-setup` runs the full script.)
 
 ## Running a case
 
-- **Start a case** — `execute POST /cases` `{ name, caseTier }` (tier 1/2/3). On
-  `402 Payment Required`, point the user to billing (`deepLinks.cases` / the
-  billing page); never collect card details.
+- **Start a case** — never ask or guess the name or tier; Relex's eval agent
+  names and tiers the case from the matter. `execute POST /cases` with an **empty
+  body**, then `POST /agent {type:"eval_req", caseId, payload:{prompt:<the
+  de-identified matter>}}`; relay any eval question it returns and repeat until it
+  returns the tier + offer, then read it back via `GET /cases?caseId={caseId}`. On
+  `402`/`payRequired`, send the user to
+  `https://relex.you/dashboard/cases/{caseId}` to review the offer and pay — never
+  quote prices, never collect card details.
 - **Parties & documents** — the user adds these in Relex (encrypted in the
   browser); point them to the case page. You may do the **id-only** attach/detach
   (`POST` / `DELETE /cases/{caseId}/parties/{partyId}` with a party id + role) —
@@ -102,22 +96,20 @@ you work a case from a shared Slack channel (Claude tagged in).
 
 ## The deeper skills (installed alongside this one)
 
-- `relex-counsel` — your role: senior counsel + oversight over the harness;
-  deadline-first snapshot, question-brake, vota, red-team gate, stop-criteria.
-- `relex-ontology` — the collaboration loop: audit the case's understanding,
-  repair the graph, direct acquisition, converge.
-- `relex-research` — you discover (web + public legal MCPs), the harness
-  fetches-and-caches verbatim text (`POST /research/scrape`), drafts cite only
-  cached law. LOCUS for US local ordinances.
-- `relex-citations` — three-tier epistemic labels, hard locks, anchors instead
-  of memorized citations.
-- `relex-matter` — deadlines, timeline, conflicts, comms log, closing.
-- `relex-participants` — who's who on a case as labels; the two never-joined
-  name-spaces; real-name handling; binding a shared Slack channel to a case.
-- `relex-intake` — end-to-end client intake: find the request, write the intake,
-  agreement from a template, native e-sign (id-only signers), invoice the client.
-- `relex-partner` — guide a firm through partner-program registration (the
-  prerequisite to charge clients + run paid intake); states + what to do.
+- `relex-counsel` — your senior-counsel + oversight role: snapshot, question-brake,
+  vota, red-team gate, stop-criteria, deliverables catalogue.
+- `relex-ontology` — the audit → repair → direct-acquisition → converge loop.
+- `relex-research` — you discover (web + public legal MCPs), the harness caches
+  verbatim (`POST /research/scrape`); LOCUS for US local ordinances.
+- `relex-citations` — three-tier labels, hard locks, anchors not memorized cites.
+- `relex-matter` — deadlines (the canonical deadline rule), timeline, conflicts,
+  comms log, closing.
+- `relex-participants` — who's who as labels; the two never-joined name-spaces;
+  real-name handling; binding a shared Slack channel to a case.
+- `relex-intake` — client intake: request → agreement → e-sign (id-only) → invoice.
+- `relex-partner` — partner-program registration (to charge clients + paid intake).
+- Jurisdiction packs (`../jurisdictions/<XX>.md`) — per-forum citation schema,
+  discovery channels, grounding, compliance, method, limitation heuristics.
 
 ## Remember
 

@@ -30,9 +30,11 @@ which court hierarchy before citing.
 | Entities | **ABN Lookup** web services; ASIC data on data.gov.au | free key |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Statutes: add a `legislation.gov.au` directive (federal) — the generic ladder
-  fetches the official text (a dedicated adapter is a backend follow-up; confirm
-  via `GET /research/sources`). State registers via `sourceHint`.
+  fetches the official text (a dedicated adapter is a backend follow-up). State
+  registers via `sourceHint`.
 - Case law: **discovery-first** — AustLII discourages scraping, so read the
   decision and pass its AustLII/court URL as `sourceHint`.
 
@@ -48,11 +50,9 @@ jade.io is freemium (own cookie).
 
 ## Community skills to consult
 **`russellbrenner/jurisd`** (local-first GraphRAG, AGLC4 linting, offline citation
-graph — architecturally strong). Relex adds grounding + PII custody.
+graph — architecturally strong) (interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 State Limitation Acts govern — commonly **6 yrs** contract/tort (e.g. Limitation
 Act 1969 (NSW) s 14), **3 yrs** personal injury in several states, with
-discoverability rules; Cth causes have their own. **Never finalize from memory** —
-compute from the secured provision for the correct jurisdiction, flag for the
-solicitor.
+discoverability rules; Cth causes have their own.

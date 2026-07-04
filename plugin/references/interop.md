@@ -1,7 +1,9 @@
 # Interop — hand in hand with the ecosystem
 
 Relex skills never duplicate what a good pack already does; they add the
-confidential execution layer (PII-safe MCP, ontology, verbatim grounding).
+confidential execution layer (PII-safe MCP, ontology, verbatim grounding). This is
+the **canonical** statement of that framing — the jurisdiction packs keep only
+their own community-pack pointers and defer the framing here.
 
 | Need | Use | Relex adds |
 |---|---|---|
@@ -12,6 +14,7 @@ confidential execution layer (PII-safe MCP, ontology, verbatim grounding).
 | US case-law discovery | CourtListener official MCP | `POST /research/scrape` grounds what you found |
 | FR / CH / EU / DE discovery | justicelibre, entscheidsuche-mcp, EUR-Lex CELLAR, NeuRIS | same |
 | Working a case from Slack (Claude tagged in) | Anthropic **Claude in Slack** (@Claude), admin-connected to the Relex connector | keeps the workspace ontology (teammates, threads) apart from the sealed case ontology; `relex-participants` teaches the who-is-who + channel-to-case binding so client identities never enter the channel |
+| Named work-products (negotiation/BATNA, examination outline, litigation technique) | Anthropic `claude-for-legal` negotiation/litigation packs | method comes from the pack; Relex anchors it to grounded, de-identified case data and records it to the case — the catalogue is `deliverables.md` |
 
 Rule: discovery and generic method may come from anywhere; **execution on real
 matters happens in Relex**, where clients' data stays encrypted and citations

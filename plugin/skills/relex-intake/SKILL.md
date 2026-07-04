@@ -1,6 +1,6 @@
 ---
 name: relex-intake
-description: Use to run an end-to-end client intake in Relex — find the client's request (from a Gmail-synced knowledge item or a case the client joined by guest link), write the intake note, create an engagement agreement from a template, get it e-signed natively, and invoice the client. Teaches the PII-safe id-only flow where the client is named by a guest reference resolved server-side, never a name or email. Organisation-only; notarization and e-filing are Enterprise + a human step.
+description: Run an end-to-end client intake in Relex — find the request, write the intake note, make an agreement from a template, get it e-signed, and invoice the client. PII-safe id-only flow (client is a server-resolved guest ref, never a name/email). Organisation-only; notarization/e-filing are Enterprise.
 ---
 
 # End-to-end client intake
@@ -63,13 +63,10 @@ the correct "record to the case" path.
 ## 5 · E-sign — id-only signers
 
 `execute POST /agreements/{agreementId}/send` with **`signerRefs` only** — never a
-name, email, or `documentHtml`:
-
-```
-execute({ method: "POST", path: "/agreements/abc123/send", body: { signerRefs: [
-  { guestUserId: "<the client's guest userId>", role: "client", routingOrder: 1 },
-  { memberSelf: true, role: "firm", routingOrder: 2 } ] } })
-```
+name, email, or `documentHtml`. Each ref carries params from `search`
+(`guestUserId` **or** `memberSelf`, `role`, `routingOrder`) — e.g. the client as
+`{guestUserId, role:"client", routingOrder:1}` then you as
+`{memberSelf:true, role:"firm", routingOrder:2}`.
 
 The server resolves each ref to a name+email server-side (from the case's guests /
 your account), substitutes signer names into the STORED template body

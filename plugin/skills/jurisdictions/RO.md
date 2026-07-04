@@ -28,10 +28,12 @@ binding**; Curtea Constituțională on constitutionality.
 | Multi | Ansvar Romanian-law-mcp; bogdan-melinescu/legislatia-romaniei | freemium |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Statutes: **`ro_dilex`** adapter enabled — grounds `art. … Cod civil` verbatim.
 - Case law: **discovery-first** — find on rejust.ro, pass its URL as `sourceHint`
   on a `case_law` directive (a dedicated rejust/docket adapter is a backend
-  follow-up). Confirm via `GET /research/sources`.
+  follow-up).
 
 ## Compliance limits
 ANSPDCP (data-protection authority); client data stays client-side. Public portals
@@ -46,10 +48,9 @@ ANSPDCP (data-protection authority); client data stays client-side. Public porta
 
 ## Community skills to consult
 `Ansvar Romanian-law-mcp` (statutes/provisions, compliance-slanted);
-`bogdan-melinescu/legislatia-romaniei`. Relex adds grounding + PII custody.
+`bogdan-melinescu/legislatia-romaniei` (interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 *Prescripția extinctivă* general **3 ani** (art. 2517 Cod civil) from when the
 right could be exercised; special terms for specific claims; labor terms in the
-Codul muncii. **Never finalize from memory** — compute from the secured article,
-flag for the *avocat*.
+Codul muncii.

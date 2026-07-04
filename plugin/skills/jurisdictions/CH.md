@@ -28,11 +28,12 @@ No stare decisis (Bundesgericht decisions are persuasive, not binding).
 | Entities | **Zefix** REST API (zefix.admin.ch) | free, email-registered |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Statutes: **`ch_fedlex`** adapter enabled — a `statute` directive grounds
   `Art. … OR/ZGB` verbatim.
 - Case law: **discovery-first** (no dedicated adapter yet) — find on
   entscheidsuche.ch, pass its URL as `sourceHint` on a `case_law` directive.
-  Confirm live via `GET /research/sources`.
 
 ## Compliance limits
 EDÖB (federal data-protection authority); revDSG (revised Swiss data-protection
@@ -48,10 +49,9 @@ financial/competition. No bulk-scraping restrictions on entscheidsuche (open).
 
 ## Community skills to consult
 **`fedec65/bettercallclaude`** (Swiss pack — agents + skills + bundled MCPs);
-`entscheidsuche-mcp`, `fedlex-mcp`. Relex adds grounding + PII custody.
+`entscheidsuche-mcp`, `fedlex-mcp` (interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 OR prescription (revised 2020): general contractual **10 yrs** (Art. 127 OR);
 periodic **5 yrs** (Art. 128); **tort 3 yrs** relative / 10 yrs absolute
-(Art. 60, revised); personal-injury absolute 20 yrs. **Never finalize from
-memory** — compute from the secured Art. text, flag for the attorney.
+(Art. 60, revised); personal-injury absolute 20 yrs.

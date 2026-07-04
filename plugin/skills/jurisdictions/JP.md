@@ -27,11 +27,13 @@ decisis, but Supreme Court (最高裁) precedents are strongly followed.
 | Entities | 法人番号 Web-API (NTA); gBizINFO REST API | free key |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Statutes: **`jp_egov`** adapter enabled (verify it targets API v2) — grounds
   `<法>第N条` verbatim.
 - Case law: **discovery-first, limited** — only selected decisions are published
   free (courts.go.jp); commercial DBs hold the rest (out of scope). Pass a
-  courts.go.jp URL as `sourceHint`. Confirm via `GET /research/sources`.
+  courts.go.jp URL as `sourceHint`.
 
 ## Compliance limits
 PPC (個人情報保護委員会 — APPI, data protection); client data stays client-side.
@@ -44,10 +46,9 @@ Most case law sits behind paid DBs — don't assume comprehensive free coverage.
 - Reiwa/Heisei era dates in citations — convert carefully.
 
 ## Community skills to consult
-`ryoooo/e-gov-law-mcp` (statutes). Relex adds grounding + PII custody.
+`ryoooo/e-gov-law-mcp` (statutes) (interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 Civil Code (2020 reform) 消滅時効: **5 yrs** from when the creditor knew they could
 exercise the right / **10 yrs** objective (民法第166条); torts 3 yrs from
-knowledge / 20 yrs (民法第724条). **Never finalize from memory** — compute from the
-secured 条 text, flag for the 弁護士.
+knowledge / 20 yrs (民法第724条).

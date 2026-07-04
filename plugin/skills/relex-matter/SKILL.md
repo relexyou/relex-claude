@@ -15,7 +15,9 @@ spreadsheet shadow copies; and the file never holds plaintext personal data.
 - **Every session**: check the case's next deadline before substantive work
   (case data + `GET /actions/pending`). If none is recorded for a live dispute,
   that IS the finding — fix it first.
-- **Never finalize a deadline from memory.** Compute from the secured norm text
+- **Never finalize a deadline from memory.** (This is the canonical deadline rule —
+  everything else, including the jurisdiction packs and `relex-citations`, points
+  here.) Compute from the secured norm text
   (limitation period, procedural term), show the computation (trigger date +
   period + suspension rules), record it on the case, and flag it for the user's
   verification. Court-order deadlines come only from the order itself.

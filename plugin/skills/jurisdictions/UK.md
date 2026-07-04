@@ -31,9 +31,11 @@ Senedd, NI Assembly).
 | Entities | **Companies House** API | free key |
 
 ## Grounding availability (harness caches verbatim)
+`GET /research/sources` is the live registry — what it lists enabled can be
+cached by directive; everything else is discovery-only via `sourceHint`.
 - Statutes: add a `uk_legislation` directive with the Act + section; the
-  legislation.gov.uk API/HTML grounds it (adapter to be enabled — confirm via
-  `GET /research/sources`; else generic ladder + `sourceHint`).
+  legislation.gov.uk API/HTML grounds it — whether a dedicated adapter is live is
+  in the registry, else the generic ladder + `sourceHint` handles it.
 - Case law: **discovery-first, single decisions only** — see compliance below.
 
 ## Compliance limits
@@ -52,12 +54,11 @@ pass their URLs as `sourceHint`; do not bulk-harvest without the licence. ICO
 
 ## Community skills to consult
 **`uk-agents/uk-legal-plugins`** (BAILII/Find Case Law/legislation.gov.uk/Hansard/
-Companies House/ICO/FCA wiring); `paulieb89/uk-legal-mcp`. Relex adds confidential
-grounding.
+Companies House/ICO/FCA wiring); `paulieb89/uk-legal-mcp`
+(interop framing → `references/interop.md`).
 
-## Limitation / deadline heuristics (orientation only — verify from the norm)
+## Limitation / deadline heuristics (orientation only — never finalize from memory)
 **E&W — Limitation Act 1980**: contract/tort **6 yrs** (ss 2, 5); personal injury
 **3 yrs** (s 11); latent damage 3 yrs from knowledge / 15-yr longstop (s 14A/14B);
 defamation **1 yr**. **Scotland differs** (Prescription and Limitation (Scotland)
-Act 1973 — 5-yr short negative prescription). **Never finalize from memory** —
-compute from the secured provision for the correct system, flag for the solicitor.
+Act 1973 — 5-yr short negative prescription).

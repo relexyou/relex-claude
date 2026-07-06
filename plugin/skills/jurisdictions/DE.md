@@ -55,7 +55,7 @@ cached by directive; everything else is discovery-only via `sourceHint`.
 ## Compliance limits
 - § 203 StGB (professional-secret) + § 43e BRAO + Art. 28 GDPR: client-linked
   data needs an AVV (data-processing agreement) with any processor — Relex keeps
-  PII client-side/encrypted, so the model never sees it (that's the point). Do
+  PII sealed or redacted client-side, so the model never sees it (that's the point). Do
   not route client PII to any third-party research tool.
 - beA (the mandatory electronic lawyer mailbox, § 130d ZPO) has **no public API** —
   don't promise beA automation.

@@ -74,10 +74,12 @@ OAuth connection also ends its sign-in session) or unpair clients in
 ## How your data is protected
 
 - Claude signs in to **your** Relex account; every call runs as you.
-- Client PII — names, national IDs, contacts, document content — is end-to-end
-  encrypted under your PII password and **only ever decrypted in your browser**.
-- The API refuses any call that would move plaintext PII and hands back a browser
-  deep link instead. Claude works with de-identified labels (`[Party 1]`) and
-  anonymized counts.
+- Client PII — names, national IDs, contacts — is sealed client-side under your
+  PII password; the server stores only ciphertext and cannot decrypt it under
+  any circumstance. Document content is redacted client-side before upload by
+  default.
+- The API additionally refuses any call that would return party or document
+  plaintext and hands back a browser deep link instead. Claude works with
+  de-identified labels (`[Party 1]`) and anonymized counts.
 - Your know-how is searched through a private, per-tenant index — never copied to
   a model and never used for training.

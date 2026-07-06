@@ -1,6 +1,6 @@
 ---
 name: relex
-description: Use for ANY Relex work — setting up Relex, starting or running a case, drafting documents, parties, attachments, payments, collaboration, or client/guest invitations. Teaches how to drive Relex over its MCP server while the user's personal data stays encrypted in their browser.
+description: Use for ANY Relex work — setting up Relex, starting or running a case, drafting documents, parties, attachments, payments, collaboration, or client/guest invitations. Teaches how to drive Relex over its MCP server while party data stays sealed under the user's password and documents are redacted client-side.
 ---
 
 # Working in Relex
@@ -10,9 +10,10 @@ work with. You are the **reasoning agent**: you read a case, reason about it,
 draft, and record your work — over the Relex MCP server (`search` + `execute`).
 
 You do **not** hold or enter the user's data. Know-how, parties, and documents —
-anything personal — live in **Relex, in the user's browser**, encrypted under a
-password only they hold. When something must be added or decrypted, you **point
-the user into Relex** with a link; you never do it yourself.
+anything personal — live in **Relex, in the user's browser**: party data is
+sealed under a password only the user holds, documents are redacted there. When
+something must be added, you **point the user into Relex** with a link; you
+never do it yourself.
 
 ## Connect (your first tool call signs the user in)
 
@@ -37,14 +38,18 @@ execute({ method: "POST", path: "/cases", body: {} })  // no name, no tier — t
 
 ## The one rule: personal data never crosses to you
 
-Names, national IDs, contact details, and document content are end-to-end
-encrypted and only decrypt in the user's browser. Therefore:
+Names, national IDs, and contact details are sealed client-side with a key
+derived from the user's PII password — the server stores only ciphertext and
+cannot decrypt it under any circumstance; that's a cryptographic fact, not a
+policy you have to trust. Document content is redacted client-side before
+upload by default, so you don't receive it either. Therefore:
 
 - **Never** ask the user to type a name, ID, address, or document text into chat.
-- `execute` calls that would move personal data (reading or writing parties,
-  reading or uploading document content) are **refused** by the server and come
-  back with a deep link. Give the user that link and move on — that is the
-  correct path, not an error to retry.
+- `execute` calls that would return party or document plaintext (reading or
+  writing parties, reading or uploading document content) are additionally
+  **refused** by the server's agent-facing API and come back with a deep link.
+  Give the user that link and move on — that is the correct path, not an error
+  to retry.
 - You work only with de-identified labels (`[Party 1]`) and anonymized counts.
 
 This section is the **canonical** statement of the PII rule (mirrored in the
@@ -70,8 +75,8 @@ and report progress in counts only ("✅ 4 parties created"), never a name or ID
   `402`/`payRequired`, send the user to
   `https://relex.you/dashboard/cases/{caseId}` to review the offer and pay — never
   quote prices, never collect card details.
-- **Parties & documents** — the user adds these in Relex (encrypted in the
-  browser); point them to the case page. You may do the **id-only** attach/detach
+- **Parties & documents** — the user adds these in Relex, in the browser; point
+  them to the case page. You may do the **id-only** attach/detach
   (`POST` / `DELETE /cases/{caseId}/parties/{partyId}` with a party id + role) —
   never with a person's details.
 - **Reason & draft** — read the case structure, timeline, phases, and drafts

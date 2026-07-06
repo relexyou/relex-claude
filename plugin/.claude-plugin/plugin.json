@@ -2,9 +2,10 @@
   "name": "relex-legal",
   "displayName": "Relex Legal",
   "version": "0.2.4",
-  "description": "Drive your Relex legal cases from Claude — read, reason, draft, and record over a PII-safe API. Clients' names, IDs, and documents stay encrypted in the user's browser; Claude only ever works with de-identified labels.",
+  "description": "Drive your Relex legal cases from Claude — read, reason, draft, and record over a PII-safe API. Clients' names and IDs are sealed with a key only the user holds, and document content is redacted client-side; Claude only ever works with de-identified labels.",
   "author": { "name": "Relex" },
   "homepage": "https://relex.you/docs/mcp",
   "repository": "https://github.com/relexyou/relex-claude",
-  "keywords": ["legal", "case-management", "contracts", "pii", "claude"]
+  "license": "AGPL-3.0-or-later",
+  "keywords": ["legal", "case-management", "pii", "claude", "ontology", "end-to-end", "sealed"]
 }

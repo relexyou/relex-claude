@@ -17,5 +17,5 @@ their own community-pack pointers and defer the framing here.
 | Named work-products (negotiation/BATNA, examination outline, litigation technique) | Anthropic `claude-for-legal` negotiation/litigation packs | method comes from the pack; Relex anchors it to grounded, de-identified case data and records it to the case — the catalogue is `deliverables.md` |
 
 Rule: discovery and generic method may come from anywhere; **execution on real
-matters happens in Relex**, where clients' data stays encrypted and citations
-are machine-verified.
+matters happens in Relex**, where clients' data stays sealed or redacted and
+citations are machine-verified.

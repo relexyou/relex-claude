@@ -19,12 +19,16 @@ client PII to the model**. This document describes the security posture of the
 
 ## Client PII never reaches the model
 
-- Client personal data — names, national IDs, contact details, and document
-  content — is **end-to-end encrypted** and only ever decrypted in your browser
-  under your PII password.
-- The MCP server **refuses** any request that would move plaintext PII (party
-  reads/writes, document/attachment content, uploads) and instead returns a deep
-  link so you complete that step securely in the browser.
+- Party data — names, national IDs, contact details — is **sealed client-side**
+  with a key derived from your PII password. The server stores only ciphertext
+  and **cannot decrypt it under any circumstance**: this is a cryptographic
+  guarantee, not a policy choice. Your password never leaves your browser.
+- Document content is redacted client-side before upload by default. Claude
+  never receives document content either way.
+- The MCP server's agent-facing API additionally **blocks** any endpoint that
+  would return party or document plaintext (party reads/writes,
+  document/attachment content, uploads) and instead returns a deep link so you
+  complete that step securely in the browser.
 - Claude works only with de-identified labels (e.g. `[Party 1]`) and anonymized
   counts. Your know-how is searched through a private, per-tenant index — never
   copied to a model and never used for training.

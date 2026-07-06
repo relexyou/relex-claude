@@ -25,10 +25,14 @@ with Google/Apple and approve, and a per-connection credential is provisioned �
 **no key paste**. A static **Relex API key** (Settings → API Keys) works as a
 CI/headless fallback. No separate service and no DNS to provision.
 
-PII / party data / document content is **end-to-end encrypted** and only the
-user's browser can decrypt it. `execute` **refuses** any call that would move
-plaintext PII and instead hands the user a **deep link** to do it securely in the
-Relex UI. The guarantee is enforced at the boundary, not by convention.
+Party data — names, IDs, contacts — is **sealed client-side** with a key derived
+from the user's PII password; the server stores only ciphertext and **cannot
+decrypt it under any circumstance** — a cryptographic guarantee, not a policy
+choice. Document content is redacted client-side before upload by default, so
+Claude never receives it either way. On top of that, `execute` **refuses** any
+call that would return party or document plaintext and instead hands the user a
+**deep link** to do it securely in the Relex UI — enforced at the API boundary,
+not by convention.
 
 ## Layout
 

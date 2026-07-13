@@ -59,6 +59,19 @@ correct path, not an error.
 - Everything sensitive (documents, bank details, rates, card) is entered by the
   user in their browser. You never handle it.
 
+## Billing → the firm's own ERP
+
+Once live, the firm keeps 100% of what clients pay them (flat monthly, 0%
+commission), and Relex hands that money movement to whatever ledger they already
+run. This connection is **direct between the firm and Relex — never through you**:
+the firm's own ERP or browser session pulls their billing export (client invoices,
+case-work earnings, Connect payouts) with the firm's own credentials. There is no
+MCP tool for it and there never will be — a partner's aggregate billing history is
+exactly the kind of private financial data that must not cross to an agent. Point
+the user at `/docs/partner-program/erp-export` and let them (or their ERP) fetch
+it directly; don't call it, don't summarize amounts you haven't seen, don't ask
+the user to paste rows to you.
+
 ## What NOT to do
 
 - Never quote or set the firm's fees, or Relex's own prices — the firm sets its

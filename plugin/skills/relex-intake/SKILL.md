@@ -33,8 +33,10 @@ Two sources, both PII-safe:
 - **By guest link** — the client joined a case via a guest link. Read the roster
   with `GET /ontology/case/{caseId}/participants` (`relex-participants`): the
   client is usually `[GUEST_1]`. Read what they wrote via
-  `execute GET /cases?caseId={caseId}` (note: caseId is a QUERY param) — their
-  request lives in the case `timeline` phases + `notes`.
+  `execute GET /cases?caseId={caseId}&full=true` (note: caseId is a QUERY param;
+  `full=true` is REQUIRED here — a plain `GET /cases` returns a bounded summary
+  without the timeline phases) — their request lives in the case `timeline`
+  phases + `notes`.
 
 ## 2 · Snapshot + conflicts
 

@@ -70,6 +70,16 @@ regulator, `sourceHint?`, `caseId?` for provenance; results are a shared cache).
   (the case's `pending_citations` / your audit's grounding gaps). Never bulk.
   There's a modest daily cap; case law behind rate-limited APIs (CourtListener
   free tier) makes every directive count.
+- **US case law is now harness-groundable**: `us_courtlistener` is a provisioned
+  source, so `POST /research/scrape` with `authorityType: "case_law"` fetches the
+  opinion's verbatim text directly (no HTML-ladder fallback). Always re-check
+  `GET /research/sources` for the live enabled set rather than assuming.
+- **Shared quota, not per-user**: the CourtListener token is ONE credential for
+  the whole deployment — every directive across every user draws from the same
+  free-tier bucket (as of the May 2026 policy change: 5/min, 50/hr, 125/day).
+  This is a stronger reason to keep directives targeted (above): a burst of
+  bulk requests from one case can throttle every other case's case-law
+  grounding for the rest of the day.
 - For case law, put court in `code` and docket/ECLI/reporter cite in `article`
   (e.g. `code: "Cass. 1re civ.", article: "21-12.345"`), `authorityType:
   "case_law"`, and the decision URL you found as `sourceHint`.

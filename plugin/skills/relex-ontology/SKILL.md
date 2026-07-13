@@ -27,8 +27,9 @@ server's PII gate rejects raw identifiers you might try to write — don't.
 - `execute GET /ontology/firm` (`?scope=org&id=` for an org) — the practice's
   abstract concept graph (doctrines, clause types, argument patterns). No case
   instances, no PII.
-- Read the case itself too (`GET /cases?caseId={caseId}` — caseId is a query
-  param): timeline, phases, locked
+- Read the case itself too (`GET /cases?caseId={caseId}&full=true` — caseId is a
+  query param; `full=true` is REQUIRED to get the timeline/phases, a plain
+  `GET /cases` returns a bounded summary): timeline, phases, locked
   issues, drafts. The graph must MATCH the case data — mismatch is a finding.
 
 ## 2 · Audit — the gap taxonomy

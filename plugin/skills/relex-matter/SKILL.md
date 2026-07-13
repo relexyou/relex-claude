@@ -25,6 +25,16 @@ spreadsheet shadow copies; and the file never holds plaintext personal data.
   (when work must start). Surface both.
 - Deadline at risk → protect first (`relex-counsel` stop-criteria), work after.
 
+## Executed agreements — the contract keeps living
+
+A signed agreement is an artifact of the matter, not the end of it. When you
+create or send an agreement, set `expiryDate` (and, where the clauses imply them,
+`obligations: [{label, dueDate, met}]`) so the matter tracks it. Relex then sends
+the practice owner renewal reminders at T-30/7/1 days and marks the agreement
+`expired` on lapse — automatically, server-side. You don't schedule reminders;
+you set the dates. Surface an approaching expiry or an open obligation as a
+timeline entry when you see one on the case.
+
 ## Timeline — append-only memory
 
 - Record every significant event as a dated timeline entry: filings, service,

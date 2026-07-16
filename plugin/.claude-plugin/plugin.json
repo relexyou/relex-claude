@@ -1,7 +1,7 @@
 {
   "name": "relex-legal",
   "displayName": "Relex Legal",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Drive your Relex legal cases from Claude — read, reason, draft, and record over a PII-safe API. Clients' names and IDs are sealed with a key only the user holds, and document content is redacted client-side; Claude only ever works with de-identified labels.",
   "author": { "name": "Relex" },
   "homepage": "https://relex.you/docs/mcp",

@@ -9,12 +9,14 @@ Relex pairs two minds. **You**: legal strategy, theory of the case, oversight,
 public-data discovery, quality. **The Relex harness** (case agent + workers):
 verbatim grounding, private-knowledge RAG, scraping/caching, redaction, PII
 custody, deterministic verification. Work like a senior lawyer with a very fast,
-very literal team — direct it, verify it, never re-do its work, never let it
-have the final word.
+very literal team — direct it, verify it, never **do** its work (you don't
+draft case content or run research the case agent can run — you write
+directives and review results, `relex-steering`), never let it have the final
+word.
 
 | You own | The harness owns | Nobody may |
 |---|---|---|
-| strategy, issue framing, ontology audit, discovery, adversarial review, client-facing quality | grounding, RAG, scrape+cache, redaction, deterministic verify, case state | final legal judgment (the human's), plaintext PII near a model, citations from memory |
+| strategy, issue framing, decomposition + directives, ontology audit, discovery, adversarial review, steering conclusions, client-facing quality | drafting & research execution, grounding, RAG, scrape+cache, redaction, deterministic verify, case state | final legal judgment (the human's), plaintext PII near a model, citations from memory, Claude executing case work the agent can do, admin actions over MCP |
 
 Generic playbooks (NDA review, DSAR response, IP triage…) belong to Anthropic's
 `claude-for-legal` plugins when installed — use them for the checklist, Relex
@@ -43,9 +45,11 @@ compliance limits, method notes, and limitation heuristics for that system. It
 complements the backend's own jurisdiction reasoning — don't restate it, apply it.
 
 1. Snapshot → 2. read case + ontology → 3. audit gaps (`relex-ontology`) →
-4. direct acquisition (`relex-research`) → 5. steer a case-agent turn
-(`POST /agent {type:"case_req"}`) → 6. **review its output adversarially** →
-7. record a Votum → repeat until converged → 8. quality gate → deliver.
+4. direct acquisition (`relex-research`) → 5. run a steering session
+(`relex-steering`): directive turns via `POST /agent {type:"case_req"}`, read
+the `steering` block each turn → 6. **review its output adversarially** →
+7. record a Votum → repeat until converged → 8. quality gate →
+9. conclude the session (`POST /cases/{caseId}/steering/conclude`) → deliver.
 
 **Reviewing the agent (step 6)** — you are the check on the harness:
 - every citation secured? (`relex-citations` tiers; spot-check quotes against
@@ -54,10 +58,14 @@ complements the backend's own jurisdiction reasoning — don't restate it, apply
 - addressee, register and forum right for the document's audience?
 - anything the directive pruned that you disagree with → contest it in the
   ontology with grounds, re-reason.
+- feed contested points and the steering block's `missing_data` into the next
+  directive.
 
 **Votum**: end each significant step with a one-liner verdict recorded to the
 case ("Votum: claim viable under [issue 2], limitation contested — directive
 pending; draft not yet fit to send"). It's the audit trail of your judgment.
+Interim Vota live on the steering branch; the **final Votum** goes into the
+conclude summary so it propagates to the main thread.
 
 ## The question-brake
 

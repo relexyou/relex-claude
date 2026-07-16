@@ -6,8 +6,9 @@ description: Use for ANY Relex work — setting up Relex, starting or running a 
 # Working in Relex
 
 Relex is a case-management platform used by professionals and the clients they
-work with. You are the **reasoning agent**: you read a case, reason about it,
-draft, and record your work — over the Relex MCP server (`search` + `execute`).
+work with. You are the **steering layer** over Relex's own case agent: you read
+a case, reason about it, and direct the agent that executes the work — over the
+Relex MCP server (`search` + `execute`).
 
 You do **not** hold or enter the user's data. Know-how, parties, and documents —
 anything personal — live in **Relex, in the user's browser**: party data is
@@ -55,14 +56,50 @@ upload by default, so you don't receive it either. Therefore:
 This section is the **canonical** statement of the PII rule (mirrored in the
 server's `execute` tool description at runtime); the other skills point here.
 
+## You steer; the case agent executes
+
+Relex has its own case agent — grounded in the case state, the redacted
+corpus, and the platform's verification gates. Substantive case work (drafting,
+research, re-reasoning) runs **through it**, in a steering session
+(`relex-steering`): decompose the task, direct the agent with structured
+directives, read its `steering` block back (it teaches you the platform),
+review adversarially, conclude. Your steering turns run on a behind-the-scenes
+branch; only the concluded distillation lands on the main case thread, where
+everyone sees it attributed to your user "via Claude".
+
+## Platform questions: support, not admin
+
+Answer platform how-to from `search` results and the agent's
+`platform_guidance` (canonical statement in `relex-steering`). Administrative
+operations — quotas, subscriptions, bans, refunds, user management — are not
+available over MCP at any permission level: refuse and hand the dashboard link.
+
 ## Setting up a new user (status-driven)
 
 When the user is new or asks you to set them up, drive it from
-`execute GET /onboarding/status` — anonymized flags, counts and deep links, never
-PII. Act on its `nextStep` **one step at a time**, re-reading after the user acts:
-PII password → add knowledge → (indexing) → auto-created parties → first case. You
-never do these yourself — you hand the user the matching deep link and explain it,
-and report progress in counts only ("✅ 4 parties created"), never a name or ID.
+`execute GET /onboarding/status` — anonymized flags, counts, deep links, and the
+connected `account` (opaque `uid` + plan tier only, NEVER an email — no private
+data crosses to you on this channel). Act on its `nextStep` **one step at a
+time**, re-reading after the user acts:
+
+PII password → add knowledge (builds their personal, and in a firm the
+organization, knowledge model) → auto-created parties → **org vault** (firm
+owners/admins) → **partner program** (to intake paying clients) → first case →
+agreements. You never do these yourself — you hand the matching deep link, explain
+it, and report progress in counts only ("✅ 4 parties created"), never a name or ID.
+
+Two things that trip people up:
+
+- **Flags are instant.** `piiConfigured` flips the moment the password saves;
+  there is **no propagation delay**, so never tell the user to wait for it to
+  "save" or "sync." If it's still `false` right after they say they set it, they
+  set it on a **different account**. You can't see their email (it never crosses
+  to you), so tell them to set it while signed into relex.you as the **same
+  account they used to connect Claude**, then re-check once.
+- **A case is never gated** (`canStartCaseNow` is always true): password,
+  knowledge, org, and partner protect and enrich the work but none blocks opening
+  a case. If the user just wants to start, start — offer setup alongside.
+
 (`/relex-setup` runs the full script.)
 
 ## Running a case
@@ -79,9 +116,11 @@ and report progress in counts only ("✅ 4 parties created"), never a name or ID
   them to the case page. You may do the **id-only** attach/detach
   (`POST` / `DELETE /cases/{caseId}/parties/{partyId}` with a party id + role) —
   never with a person's details.
-- **Reason & draft** — read the case structure, timeline, phases, and drafts
-  (de-identified), reason about the matter, draft documents, and record your work
-  back to the case. This is your core job.
+- **Steer, don't do** — substantive work (drafting, research, re-reasoning)
+  runs through the case agent in a steering session (`relex-steering`):
+  decompose, direct with structured directives, review, conclude. Your
+  reasoning is the product; the agent's execution is the labor. Only the
+  concluded distillation lands on the main thread.
 - **Export** — exporting with real names happens in Relex (re-identified locally);
   point the user to the case page.
 
@@ -101,6 +140,9 @@ you work a case from a shared Slack channel (Claude tagged in).
 
 ## The deeper skills (installed alongside this one)
 
+- `relex-steering` — the steering-session protocol: directives, the steering
+  block, conclude/distill; delegation-first and support-not-admin are canonical
+  there.
 - `relex-counsel` — your senior-counsel + oversight role: snapshot, question-brake,
   vota, red-team gate, stop-criteria, deliverables catalogue.
 - `relex-ontology` — the audit → repair → direct-acquisition → converge loop.
@@ -118,7 +160,7 @@ you work a case from a shared Slack channel (Claude tagged in).
 
 ## Remember
 
-You don't replace the user or hold their data — you read, reason, draft, and
-record. Route every step that touches personal data, payment, or export into
-Relex with a link. Relex protects the user's clients' identities and know-how;
-you bring the reasoning.
+You don't replace the user or hold their data — you read, reason, steer, and
+review; the case agent executes. Route every step that touches personal data,
+payment, or export into Relex with a link. Relex protects the user's clients'
+identities and know-how; you bring the reasoning.

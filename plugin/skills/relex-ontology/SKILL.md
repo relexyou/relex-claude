@@ -32,7 +32,30 @@ server's PII gate rejects raw identifiers you might try to write — don't.
   `GET /cases` returns a bounded summary): timeline, phases, locked
   issues, drafts. The graph must MATCH the case data — mismatch is a finding.
 
-## 2 · Audit — the gap taxonomy
+## 2 · Audit — formal conflicts first, then the gap taxonomy
+
+**The system audits with you.** Every ontology read carries `conflicts[]` —
+formal integrity findings the platform derives fresh from the graph on every
+read (never stored, so never stale): unresolved `contradicts`/`undercuts`
+edges, claims resting on ALLEGED facts, ungrounded claims, deadlines without
+date or trigger, obligations without obligor, open issues with no acquisition
+plan, duplicates, low-confidence structure, entities flagged stale, and a
+whole-graph staleness flag when case data changed after the last ontology
+update. The digest view and your steering block (`steering.conflicts`) carry
+the top findings; `?view=full` (or the plain GET) has the complete list with
+`resolution` hints. The user sees the SAME list in the case UI.
+
+Work them symbiotically: **resolve** each conflict via §3 ops (settle/contest
+the issue, add the missing link/date/party, merge duplicates, re-verify and
+clear a stale flag) — and **contribute** conflicts the formal checks cannot
+see: when YOU spot a semantic contradiction, add the `contradicts`/`undercuts`
+edge; when something presupposes outdated law, set `properties.stale=true` on
+it. The moment you write it, the system formalizes your finding and shows it
+to the user and the internal agent too. Never leave a conflict silently
+unaddressed: resolve it, acquire what resolves it, or escalate both sides to
+the human.
+
+### The gap taxonomy
 
 Walk the graph against the case facts. For each gap type there is one correct
 acquisition verb — never fill a gap from model memory:
@@ -81,7 +104,10 @@ You discover; the harness fetches-and-caches (division of labour —
 - `POST /agent {type:"case_req", caseId, payload:{prompt}}` — steer the case
   agent: name the issues to (re)enumerate, the knowledge to search, the parties
   that matter. It reads the updated ontology automatically and emits its own
-  scrape needs for anything still missing.
+  scrape needs for anything still missing. These are steering-session turns on
+  your private steering branch (`relex-steering` has the protocol); the reply's
+  `steering.missing_data` maps directly onto the §2 gap taxonomy — treat each
+  item as a gap with its acquisition verb (or its browser deep link).
 
 ## 5 · Converge — and say so
 
@@ -95,8 +121,10 @@ The loop is done when:
 Record the state as a short **Votum** (interim vote) on the case via a
 `case_req` message — e.g. *"Ontology audit: 6 issues grounded, 1 contested
 (limitation — directive pending job 4f2c), no open conflicts; addressee locked.
-Next: re-reason after ingest."* Report progress to the user with counts and
-labels only — never names.
+Next: re-reason after ingest."* Interim Vota land on the steering branch;
+capture the convergence state in the session's **conclude summary**
+(`relex-steering`) so it propagates to the main thread. Report progress to the
+user with counts and labels only — never names.
 
 ## Anti-patterns
 

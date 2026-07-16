@@ -25,6 +25,7 @@ never guess where the user is. (`/relex-setup` runs the same script.)
 | `add_knowledge` | `deepLinks.knowledge` — user uploads playbooks/templates/past matters; Relex indexes privately, builds their personal (and firm) knowledge model, and finds parties. |
 | `processing` | Indexing still running; wait, then re-read. |
 | `finish_parties` | With the PII password unlocked on the knowledge page, Relex auto-creates the detected parties (encrypted). Confirm `parties.count` rose. |
+| `fix_failed_knowledge` | `knowledge.failed` uploads failed — never skip past them. Hand `deepLinks.knowledge`: each failed entry explains itself ('Indexing failed' has an in-place Retry; the rest need remove + re-upload). You may retry an index failure via `POST /knowledge/{sourceId}/retry`; 409 `reupload_required` ⇒ hand the link. Confirm `knowledge.failed` dropped. |
 | `setup_organization` | Firm owner/admin, org has no shared vault yet → `deepLinks.orgVault` to create the org vault (whole firm's client PII under one key); manage members at `deepLinks.organization`. Confirm `organization.vaultConfigured`. |
 | `register_partner` | To intake paying clients → `deepLinks.partner`. Without it they can still send agreements/invoices but collect payment themselves. `partner.canAcceptPayments` tells you if payouts are live. |
 | `create_case` | Offer the first case: `POST /cases` with an **empty body** — the eval flow names + tiers it (see `relex`). On `payRequired`/`402`, hand `…/dashboard/cases/{caseId}`. |

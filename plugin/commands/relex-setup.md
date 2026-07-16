@@ -77,6 +77,15 @@ step (PII, documents, payments, and exports happen in the browser, never in chat
      parties it found, encrypted in your browser." Wait, then re-read; confirm
      `parties.count` went up.
 
+   - `fix_failed_knowledge` → {knowledge.failed} uploads failed and must not be
+     silently skipped. "Some of your documents didn't make it in — open
+     **{deepLinks.knowledge}**: each failed entry says why. 'Indexing failed'
+     has a **Retry** button (fixed in place); anything else needs removing and
+     uploading again." You can also retry an index failure yourself:
+     `execute POST /knowledge/{sourceId}/retry` (find ids via `GET /knowledge`) —
+     a 409 `reupload_required` means hand them the deep link instead. Wait,
+     then re-read; confirm `knowledge.failed` dropped.
+
    - `setup_organization` → the user is a firm **owner/administrator**
      (`organization.isAdmin`) and their firm has no shared PII vault yet. "Set up
      your organization vault so your whole firm's client identities are protected

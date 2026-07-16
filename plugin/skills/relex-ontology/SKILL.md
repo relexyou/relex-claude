@@ -25,8 +25,12 @@ server's PII gate rejects raw identifiers you might try to write — don't.
   verbs binding them (`cites`, `concerns`, `supports`, `contradicts`,
   `undercuts`, `party_to`, `raises`, `established_by`).
 - `execute GET /ontology/firm` (`?scope=org&id=` for an org) — the practice's
-  abstract concept graph (doctrines, clause types, argument patterns). No case
-  instances, no PII.
+  abstract concept graph (doctrines, clause types, argument patterns), grown
+  automatically from knowledge uploads and concluded cases. No case instances,
+  no PII. ANY org member can read the org graph; only curation is admin-gated.
+  If the graph is sparse but the practice HAS indexed knowledge, backfill it:
+  `POST /ontology/firm/reconcile` (self / org-admin) — call repeatedly until
+  the response's `remaining` is 0 (each call processes up to 25 sources).
 - Read the case itself too (`GET /cases?caseId={caseId}&full=true` — caseId is a
   query param; `full=true` is REQUIRED to get the timeline/phases, a plain
   `GET /cases` returns a bounded summary): timeline, phases, locked

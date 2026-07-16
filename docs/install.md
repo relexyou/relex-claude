@@ -44,13 +44,29 @@ browser via secure deep links.
 
 ## Claude Desktop / claude.ai
 
-Add a custom connector:
+**MCP URL:** `https://relex.you/api/mcp`
 
-- **Settings → Connectors → Add custom connector**
-- URL: `https://relex.you/api/mcp`
+How you add it depends on your plan — and **on every plan you finish by clicking
+Connect**:
 
-Sign-in is automatic (OAuth) the first time Claude uses it. Then say *"set up my
-practice workflow with Relex"* as above. See `connect-claude-desktop.md`.
+| Plan | Who installs the connector | Who connects (OAuth) |
+|------|----------------------------|----------------------|
+| **Pro / Max** (personal) | You — **Customize → Connectors → Add custom connector** | You click **Connect** and sign in |
+| **Team / Enterprise** | **Owner or admin** adds it once in the **organisation’s settings → Connectors** | Each **member** opens **Customize → Connectors**, finds Relex under **available connectors**, and clicks **Connect** |
+
+Members on Team / Enterprise **cannot** add custom connectors themselves. If
+Relex is missing from the list, ask your admin. If it is listed but not
+connected, only you can complete OAuth for your Relex account.
+
+Sign-in is automatic (OAuth) the first time you Connect. Then say *"set up my
+practice workflow with Relex"* as above. Full walkthrough:
+[`connect-claude-desktop.md`](connect-claude-desktop.md).
+
+Other agents use the same MCP server with different packaging:
+[GPT](https://github.com/relexyou/relex-gpt) ·
+[Grok](https://github.com/relexyou/relex-grok) ·
+[Gemini](https://github.com/relexyou/relex-gemini) ·
+[generic MCP](https://github.com/relexyou/relex-mcp).
 
 ## OpenAI Codex
 

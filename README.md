@@ -44,6 +44,7 @@ relex-claude/
 │   ├── commands/                /relex-setup (guided onboarding) + /relex-connect
 │   ├── skills/
 │   │   ├── relex/               Drive Relex over MCP + PII discipline (auto-loaded)
+│   │   ├── relex-steering/      The steering-session protocol: directives → steering block → conclude/distill
 │   │   ├── relex-counsel/       Senior-counsel role + oversight loop over the harness
 │   │   ├── relex-ontology/      The read→audit→repair→acquire→converge collaboration loop
 │   │   ├── relex-research/      You discover (web + public legal MCPs); the harness grounds
@@ -68,10 +69,15 @@ relex-claude/
 
 ## What Claude can do inside a case
 
-Claude acts as **senior counsel + oversight**; the Relex backend agents are the
-**execution harness**; they collaborate through the case **ontology** (the
-shared understanding — Claude audits it for gaps, repairs it, and directs
-acquisition). Division of labour: **you discover** public authority (your own web
+Claude acts as **senior counsel + steering layer**; the Relex backend agents are
+the **execution harness**. Claude doesn't produce the case work itself — it runs
+**steering sessions**: each `case_req` turn is a structured directive on a
+private branch of the case timeline; the case agent executes and teaches Claude
+the platform back through a `steering` block (guidance, missing data, suggested
+next calls); when Claude concludes the session, a distilled high-fidelity
+summary lands on the main case thread, attributed to the user "via Claude".
+They also collaborate through the case **ontology** (the shared understanding —
+Claude audits it for gaps, repairs it, and directs acquisition). Division of labour: **you discover** public authority (your own web
 search + public legal MCPs — CourtListener, EUR-Lex, entscheidsuche, NeuRIS…),
 and the **harness grounds** it — a draft may only cite law whose *verbatim* text
 sits in the cache (the server verifier enforces it), so citations don't
@@ -98,3 +104,19 @@ repo is just the plugin + docs.
    [`connect-claude-tag.md`](docs/connect-claude-tag.md),
    [`connect-codex.md`](docs/connect-codex.md)).
 3. From then on, ask Claude to start cases, draft, and manage matters.
+
+### Claude desktop / Team note
+
+On **Pro / Max** you add the custom connector yourself
+(`https://relex.you/api/mcp`). On **Team / Enterprise** an **owner or admin**
+adds it once in the organisation’s Connectors settings; each member only opens
+**Customize → Connectors**, finds Relex already listed, and clicks **Connect**.
+Details: [`docs/connect-claude-desktop.md`](docs/connect-claude-desktop.md).
+
+### Other agents
+
+Same MCP server, different packaging:
+[relex-gpt](https://github.com/relexyou/relex-gpt) ·
+[relex-grok](https://github.com/relexyou/relex-grok) ·
+[relex-gemini](https://github.com/relexyou/relex-gemini) ·
+[relex-mcp](https://github.com/relexyou/relex-mcp) (generic).
